@@ -1,3 +1,4 @@
+from __future__ import print_function
 import flask
 import os
 from gevent.pywsgi import WSGIServer
@@ -29,8 +30,8 @@ def send_pic(filename):
 if __name__ == "__main__":
     #app.run(port=PORT)
     http_server = WSGIServer(('', PORT), app)
-    print "\nStarting Bokeh plot server on port %d..." % PORT
-    print "Visit http://localhost:%d/gallery.html to see plots\n" % PORT
+    print("\nStarting Bokeh plot server on port %d..." % PORT)
+    print("Visit http://localhost:%d/gallery.html to see plots\n" % PORT)
     
     pid = os.fork()
     if pid != 0:

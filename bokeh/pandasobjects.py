@@ -1,6 +1,9 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
 import pandas
 import time
-import protocol
+from . import protocol
 import numpy as np
 import requests
 
@@ -199,7 +202,7 @@ class PandasPivotTable(PlotObject):
         
     def get_data(self, obj=None, attrname=None, old=None, new=None):
         data = self.source.get_data(self.transform())
-        print data['data']['_selected']
+        print(data['data']['_selected'])
         self.maxlength = data.pop('maxlength')
         self.totallength = data.pop('totallength')
         self.format_data(data['data'])

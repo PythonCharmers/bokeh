@@ -1,3 +1,4 @@
+from __future__ import division
 import uuid
 import json
 import threading
@@ -80,7 +81,7 @@ def default_serialize_data(data):
             d = np.ascontiguousarray(d)
             try:
                 temp = np.frombuffer(d, dtype=d.dtype)
-            except ValueError, TypeError:
+            except ValueError as TypeError:
                 add_pickle(d)
                 continue
             add_numpy(d)

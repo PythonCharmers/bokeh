@@ -1,5 +1,7 @@
 """ Command-line driven plotting functions, a la Matplotlib  / Matlab / etc.
 """
+from __future__ import division
+from __future__ import print_function
 import copy
 from collections import Iterable
 from functools import wraps
@@ -97,7 +99,7 @@ def plothelp():
         Updates the output HTML file or forces an upload of plot data
         to the server
     """
-    print helpstr
+    print(helpstr)
 
 
 DEFAULT_SERVER_URL = "http://localhost:5006/"
@@ -203,12 +205,12 @@ def output_server(docname, url="default", **kwargs):
     try:
         _config["session"] = PlotServerSession(**kwargs)
     except requests.exceptions.ConnectionError:
-        print "Cannot connect to Bokeh server. (Not running?) To start the Bokeh server execute 'bokeh-server'"
+        print("Cannot connect to Bokeh server. (Not running?) To start the Bokeh server execute 'bokeh-server'")
         import sys
         sys.exit(1)
     _config["session"].use_doc(docname)
 
-    print "Using plot server at", real_url + "bokeh;", "Docname:", docname
+    print("Using plot server at", real_url + "bokeh;", "Docname:", docname)
 
 def output_file(filename, title="Bokeh Plot", autosave=True, js="inline",
                 css="inline", rootdir="."):
@@ -228,7 +230,7 @@ def output_file(filename, title="Bokeh Plot", autosave=True, js="inline",
     """
     set_config()
     if os.path.isfile(filename):
-        print "Session output file '%s' already exists, will be overwritten." % filename
+        print("Session output file '%s' already exists, will be overwritten." % filename)
     session = HTMLFileSession(filename, title=title)
     if js == "relative":
         session.inline_js = False
@@ -707,7 +709,7 @@ marker_types = {
 def markers():
     """ Prints a list of valid marker types for scatter()
     """
-    print sorted(marker_types.keys())
+    print(sorted(marker_types.keys()))
 
 
 for _marker_name, _glyph_class in marker_types.items():

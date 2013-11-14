@@ -1,16 +1,18 @@
+from __future__ import print_function
+from __future__ import absolute_import
 import numpy as np
 import logging
 import urlparse
 import requests
 import uuid
-import bbmodel
-import protocol
-import data
+from . import bbmodel
+from . import protocol
+from . import data
 import os
-import dump
+from . import dump
 import json
 import pandas
-from exceptions import DataIntegrityException
+from .exceptions import DataIntegrityException
 
 from bokeh import protocol
 from bokeh.utils import get_json
@@ -247,7 +249,7 @@ class XYPlot(BokehMPLBase):
                 xfield = 'x'
                 yfields = colnames
             else:
-                raise Exception, "too many dims"
+                raise Exception("too many dims")
             return source, xfield, yfields
         if not isinstance(x, basestring):
             if y is None:
@@ -267,7 +269,7 @@ class XYPlot(BokehMPLBase):
         else:
             xfield = x
             if y is None:
-                raise Exception, 'must specify X and Y when calling with strings'
+                raise Exception('must specify X and Y when calling with strings')
             yfields = [y]
             if data_source:
                 source = data_source
@@ -377,7 +379,7 @@ class PlotClient(object):
         if self.root_url:
             self.update_userinfo()
         else:
-            print 'Not using a server, plots will only work in embedded mode'
+            print('Not using a server, plots will only work in embedded mode')
         self.docid = None
         self.models = {}
         self.clf()
@@ -404,16 +406,16 @@ class PlotClient(object):
         url = urlparse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
         resp = self.session.get(url, verify=False)
         if resp.status_code == 401:
-            raise Exception, 'unauthorized'
+            raise Exception('unauthorized')
         apikey = get_json(resp)
         if 'apikey' in apikey:
             self.docid = docid
             self.apikey = apikey['apikey']
-            print 'got read write apikey'
+            print('got read write apikey')
         else:
             self.docid = docid
             self.apikey = apikey['readonlyapikey']
-            print 'got read only apikey'
+            print('got read only apikey')
         self.models = {}
         url = urlparse.urljoin(self.root_url, "/bokeh/bb/")
         self.bbclient = bbmodel.ContinuumModelsClient(
@@ -421,7 +423,7 @@ class PlotClient(object):
         interactive_contexts = self.bbclient.fetch(
             typename='PlotContext')
         if len(interactive_contexts) > 1:
-            print 'warning, multiple plot contexts here...'
+            print('warning, multiple plot contexts here...')
         self.ic = interactive_contexts[0]
 
     def make_doc(self, title):
@@ -447,9 +449,9 @@ class PlotClient(object):
         docs = self.userinfo.get('docs')
         matching = [x for x in docs if x.get('title') == name]
         if len(matching) > 1:
-            print 'warning, multiple documents with that title'
+            print('warning, multiple documents with that title')
         if len(matching) == 0:
-            print 'no documents found, creating new document'
+            print('no documents found, creating new document')
             self.make_doc(name)
             return self.use_doc(name)
             docs = self.userinfo.get('docs')

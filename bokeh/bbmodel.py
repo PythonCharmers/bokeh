@@ -1,8 +1,10 @@
-import protocol
+from __future__ import print_function
+from __future__ import absolute_import
+from . import protocol
 import requests
 import urlparse
 import urllib
-import utils
+from . import utils
 import uuid
 import logging
 import copy
@@ -14,7 +16,7 @@ log = logging.getLogger(__name__)
 special_types = {}
 
 def load_special_types():
-    import specialmodels.pandasmodel
+    from . import specialmodels.pandasmodel
 
 def register_type(typename, cls):
     special_types[typename] = cls
@@ -98,7 +100,7 @@ class ContinuumModel(object):
     
     def pull(self):
         if not self.client:
-            print "can't fetch, not connected to the server"
+            print("can't fetch, not connected to the server")
             return
         newobj = self.client.fetch(typename=self.typename,
                                    id=self.id,
@@ -109,7 +111,7 @@ class ContinuumModel(object):
     def update(self):
         if not self.client:
             import pdb;pdb.set_trace()
-            print "can't update, not connected to the server"
+            print("can't update, not connected to the server")
             return
         self.client.update(self)
         

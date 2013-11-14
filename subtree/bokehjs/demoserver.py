@@ -1,3 +1,4 @@
+from __future__ import print_function
 import flask
 import hemlib
 import json
@@ -31,7 +32,7 @@ def display_page(file_set, template, **extra_template_vars):
         hemfiles = hemlib.coffee_assets(SRCDIR, HOST, slug['port'],
                                         excludes=EXCLUDES)
         hemfiles.extend(hemlib.make_urls(file_set, HOST, slug['port']))
-        print "demoserver hemfiles", hemfiles
+        print("demoserver hemfiles", hemfiles)
     else:
         jslibs= ['/static/js/demo/application.js']
         hemfiles = []

@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 from numpy import pi, arange, sin, cos
 import numpy as np
@@ -45,7 +46,7 @@ sess = session.HTMLFileSession("line.html")
 sess.add(plot, renderer, xaxis, yaxis, source, xdr, ydr, pantool, zoomtool)
 sess.plotcontext.children.append(plot)
 sess.save(js="relative", css="relative", rootdir=os.path.abspath("."))
-print "Wrote line.html"
+print("Wrote line.html")
 
 try:
     import webbrowser

@@ -1,4 +1,5 @@
 """ Demonstrates data-dependent color """
+from __future__ import print_function
 
 import os.path
 from bokeh.objects import (Plot, DataRange1d, LinearAxis, 
@@ -60,7 +61,7 @@ sess = session.HTMLFileSession(FILENAME)
 sess.add(plot, glyph_renderer, xaxis, yaxis, source, xdr, ydr, pantool, zoomtool)
 sess.plotcontext.children.append(plot)
 sess.save(js="relative", css="relative", rootdir=os.path.abspath("."))
-print "Wrote " + FILENAME
+print("Wrote " + FILENAME)
 try:
     import webbrowser
     webbrowser.open("file://" + os.path.abspath(FILENAME))

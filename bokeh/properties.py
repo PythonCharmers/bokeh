@@ -1,6 +1,7 @@
 """ A set of descriptors that document intended types for attributes on
 classes and implement convenience behaviors like default values, etc.
 """
+from __future__ import print_function
 
 from copy import copy
 import inspect
@@ -611,7 +612,7 @@ class HasProps(object):
     def pprint_props(self, indent=0):
         """ Prints the properties of this object, nicely formatted """
         for p in self.__properties__:
-            print "  "*indent + p + ":", getattr(self, p)
+            print("  "*indent + p + ":", getattr(self, p))
 
 # Python scalar types
 class Int(BaseProperty): pass

@@ -3,11 +3,12 @@ Functional interface for implementing qplot() like functionality in
 Python using Chaco.  Uses other Bokeh classes to represent the pipeline
 and constructs a session-level object using the Chaco shell.
 """
+from __future__ import absolute_import
 
 import chaco.shell
 from chaco.shell import *
 
-from ggplot import GGPlot, Aesthetic, GeomPoint, GeomLine, Facet, Factor, Tool
+from .ggplot import GGPlot, Aesthetic, GeomPoint, GeomLine, Facet, Factor, Tool
 
 _auto_show = True
 _plot_object = None

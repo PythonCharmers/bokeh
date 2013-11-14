@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 
 from os import mkdir
 from os.path import exists, expanduser, isdir, join
@@ -8,7 +10,7 @@ def _bokeh_dir(create=False):
     bokeh_dir = expanduser("~/.bokeh")
     if not exists(bokeh_dir):
         if not create: return bokeh_dir
-        print "Creating ~/.bokeh directory"
+        print("Creating ~/.bokeh directory")
         try:
             mkdir(bokeh_dir)
         except OSError:
@@ -29,7 +31,7 @@ def _data_dir(create=False):
     if not exists(data_dir):
         if not create:
             raise RuntimeError('bokeh sample data directory does not exist, please execute bokeh.sampledata.download()')
-        print "Creating %s directory" % data_dir
+        print("Creating %s directory" % data_dir)
         try:
             mkdir(data_dir)
         except OSError:
@@ -46,7 +48,7 @@ def download():
 
     data_dir = _data_dir(create=True)
 
-    print "Using data directory: %s" % data_dir
+    print("Using data directory: %s" % data_dir)
 
     base_url = 'https://s3.amazonaws.com/bokeh_data/'
     files = [
@@ -70,7 +72,7 @@ def _getfile(base_url, file_name, data_dir):
     f = open(join(data_dir, file_name), 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading: %s Bytes: %s" % (file_name, file_size)
+    print("Downloading: %s Bytes: %s" % (file_name, file_size))
 
     file_size_dl = 0
     block_sz = 8192
@@ -83,6 +85,6 @@ def _getfile(base_url, file_name, data_dir):
         f.write(buffer)
         status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
         status = status + chr(8)*(len(status)+1)
-        print status,
+        print(status, end=' ')
 
     f.close()

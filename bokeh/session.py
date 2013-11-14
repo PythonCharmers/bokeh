@@ -1,7 +1,8 @@
 """ Defines the base PlotSession and some example session types.
 """
+from __future__ import absolute_import
 
-from exceptions import DataIntegrityException
+from .exceptions import DataIntegrityException
 from os.path import abspath, split, join
 import os.path
 import json

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import requests
 import urlparse
 import uuid
@@ -7,7 +8,7 @@ import redis
 import bokeh.bbmodel as bbmodel
 from bokeh import protocol
 from bokeh.bbmodel import ContinuumModelsClient
-from models import docs
+from .models import docs
 import numpy as np
 logger = logging.getLogger(__name__)
 

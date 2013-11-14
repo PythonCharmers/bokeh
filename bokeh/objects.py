@@ -4,6 +4,7 @@ this module can be stored as a backbone.js model graph, and stored in a
 plot server or serialized into JS for embedding in HTML or an IPython
 notebook.
 """
+from __future__ import absolute_import
 import os
 from uuid import uuid4
 from functools import wraps
@@ -603,7 +604,7 @@ class Plot(PlotObject):
     
 
     def _get_script_inject_snippet(self):
-        from session import HTMLFileSession
+        from .session import HTMLFileSession
         if isinstance(self._session, HTMLFileSession):
             self.script_inject_snippet
             return ""

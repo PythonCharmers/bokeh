@@ -1,8 +1,10 @@
+from __future__ import print_function
 import os
 import re
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
+from functools import reduce
 
 
 _basedir = os.path.dirname(__file__)
@@ -17,7 +19,7 @@ def page_desc(prev_infos, module_desc):
     module_path, name_ = module_desc['file'], module_desc['name']
     varname= module_desc.get("varname", 'curplot')
     temp_dict = {}
-    execfile(module_path, temp_dict)
+    exec(compile(open(module_path).read(), module_path, 'exec'), temp_dict)
     if varname=='curplot':
         plot = temp_dict[varname]()
     else:
@@ -69,7 +71,7 @@ def make_gallery(module_descs):
 
         fname = os.path.join(detail_dir, info['name'] + ".html")
         info['HOSTED_STATIC_ROOT']= HOSTED_STATIC_ROOT
-        print " writing to ", fname
+        print(" writing to ", fname)
         with open(fname, "w") as f:
             f.write(t.render(info))
     gallery_snippet += "</ul>"    

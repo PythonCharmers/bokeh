@@ -1,4 +1,5 @@
 import urlparse
+from functools import reduce
 def urljoin(*args):
     return reduce(urlparse.urljoin, args)
 
