@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 special_types = {}
 
 def load_special_types():
-    from . import specialmodels.pandasmodel
+    import bokeh.specialmodels.pandasmodel
 
 def register_type(typename, cls):
     special_types[typename] = cls

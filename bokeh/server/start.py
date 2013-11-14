@@ -20,9 +20,9 @@ bbmodel.load_special_types()
 #import objects so that we can resolve them
 import bokeh.objects
 import bokeh.glyphs
-from . import models.user as user
-from . import models.convenience as mconv
-from . import models.docs as docs
+from bokeh.server.models import user
+from bokeh.server.models import convenience
+from bokeh.server.models import docs
 import os
 try:
     from continuumweb import hemlib
@@ -41,7 +41,7 @@ app = Flask("bokeh.server")
 
 def prepare_app(rhost='127.0.0.1', rport=REDIS_PORT, start_redis=True):
     #must import views before running apps
-    from . import views.deps
+    from bokeh.server.views import deps
     app.register_blueprint(bokeh_app)
     bokeh_app.redis_port = rport
     bokeh_app.start_redis = start_redis
