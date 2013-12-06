@@ -1,3 +1,4 @@
+from __future__ import print_function
 import flask
 import json
 import os
@@ -25,11 +26,11 @@ def coffee_assets(prefix, host, port, excludes=None):
     ftargets = []
     for path, dirs, files in os.walk(prefix, followlinks=True):
         if path in excludes:
-            print "coffee_assets() skipping", path
+            print("coffee_assets() skipping", path)
             continue
         for f in files:
             fname = os.path.join(path, f)
-            print fname
+            print(fname)
             ftargets.append(fname)
     #filter out ignores
     ftargets = [f for f in ftargets if not \
@@ -55,5 +56,5 @@ def slug_libs(app, libs):
     targets = [os.path.join(slug_path(), os.path.normpath(x)) for x in libs]
     targets = [os.path.relpath(x, app.static_folder) for x in targets]
     targets = [flask.url_for('static', filename=x) for x in targets]
-    print "slug_libs targets", targets
+    print("slug_libs targets", targets)
     return targets

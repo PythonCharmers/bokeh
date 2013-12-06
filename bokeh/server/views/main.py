@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 from flask import (
     render_template, request,
     send_from_directory, abort,
@@ -9,7 +11,7 @@ import logging
 import uuid
 
 
-from bbauth import check_read_authentication_and_create_client
+from .bbauth import check_read_authentication_and_create_client
 
 
 from ..models import user
@@ -129,7 +131,7 @@ def _get_bokeh_info(docid):
     sess.load()
     sess.prune()
     all_models = sess._models.values()
-    print "num models", len(all_models)
+    print("num models", len(all_models))
     all_models = sess.broadcast_attrs(all_models)
     returnval = {'plot_context_ref' : doc.plot_context_ref,
                  'docid' : docid,

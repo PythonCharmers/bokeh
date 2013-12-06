@@ -1,6 +1,7 @@
-import main
-import backbone
-import websocket
+from __future__ import absolute_import
+from . import main
+from . import backbone
+from . import websocket
 
 
 

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import time
 import unittest
 import mock
@@ -5,7 +6,7 @@ import gevent
 import redis
 import requests
 
-import test_utils
+from . import test_utils
 from ..app import app
 from ..models import user
 from .. import models

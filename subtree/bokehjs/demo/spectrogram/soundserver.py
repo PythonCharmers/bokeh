@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 
 import flask
 import json
@@ -72,7 +74,7 @@ def root():
     else:
         jslibs = ['/static/js/demo/application.js']
         hemfiles = []
-    print "soundserver hemfiles", hemfiles
+    print("soundserver hemfiles", hemfiles)
     #demofiles = [os.path.join(EXAMPLE_SRCDIR,".coffee") for name in demos]
     demofiles = ["static/coffee/spectrogram.coffee"]
 

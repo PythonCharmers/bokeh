@@ -1,3 +1,4 @@
+from __future__ import print_function
 import uuid
 from .. import models 
 from ...objects import PlotObject, recursively_traverse_plot_object
@@ -9,7 +10,7 @@ def transform_models(models):
     """backwards compatability code for data migrations - out of date with
     new object stuff
     """
-    print 'transforming!'
+    print('transforming!')
     model_cache = {}
     to_delete = set()
     for m in models:
@@ -96,7 +97,7 @@ def prune_and_get_valid_models(doc, session, delete=False):
     performs any backwards compatability data transformations.  
     """
     objs = recursively_traverse_plot_object(session.plotcontext)
-    print "num models", len(objs)
+    print("num models", len(objs))
     if delete:
         for obj in session._models.values():
             if obj not in objs:
