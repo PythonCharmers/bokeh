@@ -716,7 +716,7 @@ for _marker_name, _glyph_class in marker_types.items():
     if len(_marker_name) <= 2:
         continue
     _func = GlyphFunction(_glyph_class, ("x", "y"))
-    exec "%s = _func" % _marker_name
+    exec("%s = _func" % _marker_name)
 
 def scatter(*args, **kwargs):
     """ Creates a scatter plot of the given x & y items
