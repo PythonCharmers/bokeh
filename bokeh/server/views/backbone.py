@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from future import standard_library
 from flask import (
         render_template, request,
         send_from_directory, make_response)
@@ -8,7 +7,6 @@ import flask
 import os
 import logging
 import uuid
-import urllib.parse
 from ..app import app
 from ..serverbb import RedisSession
 from .. import wsmanager

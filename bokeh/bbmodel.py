@@ -1,21 +1,21 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from future import standard_library
-from future.builtins import super
-from future.builtins import str
-from . import protocol
-import requests
-import urllib.parse
-import urllib.request, urllib.parse, urllib.error
-from . import utils
+from __future__ import absolute_import, print_function, unicode_literals
 import uuid
 import logging
 import copy
 import pickle as pickle
-import redis
+try:
+    from urllib.parse import urlsplit, urlencode
+except ImportError:   # Python 2
+    from urlparse import urlsplit
 
+import requests
+import redis
 import numpy as np
+from future.builtins import str, super
+
+from . import protocol
+from . import utils
+
 log = logging.getLogger(__name__)
 special_types = {}
 
@@ -123,7 +123,7 @@ class ContinuumModelsClient(object):
     def __init__(self, docid, baseurl, apikey, session=None):
         self.apikey = apikey
         self.baseurl = baseurl
-        parsed = urllib.parse.urlsplit(baseurl)
+        parsed = urlsplit(baseurl)
         self.docid = docid
         if session is None:
             session = requests.session()
@@ -190,7 +190,7 @@ class ContinuumModelsClient(object):
                           include_hidden=include_hidden)
     
     def fetch(self, typename=None, id=None, include_hidden=False):
-        query = urllib.parse.urlencode({'include_hidden' : include_hidden})
+        query = urlencode({'include_hidden' : include_hidden})
         if typename is None:
             url = utils.urljoin(self.baseurl, self.docid +"/") + "?" + query
             data = self.s.get(url).content

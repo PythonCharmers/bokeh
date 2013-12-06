@@ -1,11 +1,14 @@
 from __future__ import unicode_literals
-from future import standard_library
-from future.builtins import super
 import uuid
 import base64
-import pickle as pickle
-import numpy as np
+try:
+    import cPickle as pickle
+except:   # Python 3
+    import pickle
 import datetime as dt
+
+import numpy as np
+from future.builtins import super
 
 from ..bbmodel import ContinuumModel, register_type
 from ..data import make_source

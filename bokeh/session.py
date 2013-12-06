@@ -2,17 +2,17 @@
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from future import standard_library
-from future.builtins import super
-from future.builtins import str
-from future.builtins import open
+from future.builtins import open, str, super
 
 from .exceptions import DataIntegrityException
 from os.path import abspath, split, join
 import os.path
 import json
 import logging
-import urllib.parse
+try:
+    from urllib.parse import urljoin, urlsplit
+except ImportError:   # Python 2
+    from urlparse import urljoin, urlsplit
 import uuid
 import warnings
 
@@ -482,7 +482,7 @@ class PlotServerSession(BaseHTMLSession):
             'BOKEHUSER' : username})
 
         if self.root_url:
-            url = urllib.parse.urljoin(self.root_url, '/bokeh/userinfo/')
+            url = urljoin(self.root_url, '/bokeh/userinfo/')
             self.userinfo = utils.get_json(self.http_session.get(url, verify=False))
         else:
             logger.info('Not using a server, plots will only work in embedded mode')
@@ -492,7 +492,7 @@ class PlotServerSession(BaseHTMLSession):
         self.plotcontext = None
         self.apikey = None
         self.bbclient = None   # reference to a ContinuumModelsClient
-        self.base_url = urllib.parse.urljoin(self.root_url, "/bokeh/bb/")
+        self.base_url = urljoin(self.root_url, "/bokeh/bb/")
         self.raw_js_objs = []
         super(PlotServerSession, self).__init__()
 
@@ -503,7 +503,7 @@ class PlotServerSession(BaseHTMLSession):
         self.raw_js_objs.append(obj)
 
     def load_doc(self, docid):
-        url = urllib.parse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
+        url = urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
         resp = self.http_session.get(url, verify=False)
         if resp.status_code == 401:
             raise Exception('HTTP Unauthorized accessing DocID "%s"' % docid)
@@ -533,7 +533,7 @@ class PlotServerSession(BaseHTMLSession):
         return
 
     def make_doc(self, title):
-        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/")
+        url = urljoin(self.root_url,"/bokeh/doc/")
         data = protocol.serialize_web({'title' : title})
         response = self.http_session.post(url, data=data, verify=False)
         if response.status_code == 409:
@@ -544,7 +544,7 @@ class PlotServerSession(BaseHTMLSession):
         matching = [x for x in self.userinfo['docs'] \
                     if x.get('title') == title]
         docid = matching[0]['docid']
-        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
+        url = urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
         response = self.http_session.delete(url, verify=False)
         if response.status_code == 409:
             raise DataIntegrityException
@@ -912,7 +912,7 @@ class NotebookServerSession(NotebookSessionMixin, PlotServerSession):
     """ An IPython Notebook session that is connected to a plot server.
     """
     def ws_conn_string(self):
-        split = urllib.parse.urlsplit(self.root_url)
+        split = urlsplit(self.root_url)
         #how to fix this in bokeh and wakari?
         if split.scheme == 'http':
             return "ws://%s/bokeh/sub" % split.netloc

@@ -1,11 +1,15 @@
 from __future__ import unicode_literals
-from future import standard_library
 import unittest
+import tempfile
+try:
+    import cPickle as pickle
+except:   # Python 3
+    import pickle
+
+import pandas
+
 from ...specialmodels.pandasmodel import PandasPivotModel, PandasDataSource
 from ...bbmodel import make_model, ContinuumModel
-import tempfile
-import pickle as pickle
-import pandas
 
 class PandasModelTestCase(unittest.TestCase):
     def setUp(self):

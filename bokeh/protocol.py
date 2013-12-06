@@ -1,6 +1,5 @@
 from __future__ import division
 from __future__ import unicode_literals
-from future import standard_library
 from future.builtins import super
 from future.builtins import int
 import uuid
@@ -8,7 +7,10 @@ import json
 import threading
 import logging
 import time
-import pickle as pickle
+try:
+    import cPickle as pickle
+except:   # Python 3
+    import pickle
 import numpy as np
 import pandas as pd
 

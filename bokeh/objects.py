@@ -6,14 +6,16 @@ notebook.
 """
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from future import standard_library
 from future.builtins import open
 from future.builtins import super
 from future.builtins import str
 import os
 from uuid import uuid4
 from functools import wraps
-import urllib.parse
+try:
+    from urllib.parse import urlsplit
+except ImportError:   # Python 2
+    from urlparse import urlsplit
 import warnings
 import logging
 from future.utils import with_metaclass
@@ -344,7 +346,7 @@ class PlotObject(with_metaclass(Viewable, HasProps)):
         sess = self._session
         modelid = self._id
         typename = self.__view_model__
-        split = urllib.parse.urlsplit(sess.root_url)
+        split = urlsplit(sess.root_url)
         if split.scheme == 'http':
             ws_conn_string = "ws://%s/bokeh/sub" % split.netloc
         else:

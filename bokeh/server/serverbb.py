@@ -1,18 +1,20 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from future import standard_library
+from __future__ import absolute_import, unicode_literals
 from future.builtins import zip
-import requests
-import urllib.parse
 import uuid
 import logging
-import pickle as pickle
+try:
+    import cPickle as pickle
+except:   # Python 3
+    import pickle
+
+import requests
 import redis
+import numpy as np
+
 import bokeh.bbmodel as bbmodel
 from bokeh import protocol
 from bokeh.bbmodel import ContinuumModelsClient
 from .models import docs
-import numpy as np
 logger = logging.getLogger(__name__)
 
 from bokeh.objects import PlotObject, Plot
