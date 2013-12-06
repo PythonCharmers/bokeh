@@ -1,14 +1,15 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from future.builtins import int
-from future.builtins import chr
-from future.builtins import open
+from __future__ import division, print_function, unicode_literals
 
 from os import mkdir
 from os.path import exists, expanduser, isdir, join
-import urllib.request, urllib.error, urllib.parse
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
 import yaml
+from future.builtins import chr, int, open
+
 
 def _bokeh_dir(create=False):
     bokeh_dir = expanduser("~/.bokeh")
@@ -72,7 +73,7 @@ def download():
 def _getfile(base_url, file_name, data_dir):
 
     url = join(base_url, file_name)
-    u = urllib.request.urlopen(url)
+    u = urlopen(url)
     f = open(join(data_dir, file_name), 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
