@@ -43,7 +43,7 @@ def concat_css(paths):
           /* BEGIN %s */
          """ % f_name
 
-        output_str += open(f_name).read().decode("utf-8")
+        output_str += open(f_name).read()
         output_str += """
           /* END %s */
          """ % f_name

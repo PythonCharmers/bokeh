@@ -97,7 +97,7 @@ class BokehMPLBase(object):
             script_paths=[],
             css_paths=[]
             )
-        html = html.encode('utf-8')
+        # Was: html = html.encode('utf-8')
         return html
 
     def script_inject(self):
@@ -106,7 +106,7 @@ class BokehMPLBase(object):
 
     def htmldump(self, path=None):
         """ If **path** is provided, then writes output to a file,
-        else returns the output as a string.
+        else returns the output as a (unicode) string.
         """
         html = self.plotclient.make_html(self.allmodels(),
                                          model=getattr(self, self.topmodel),
@@ -114,9 +114,9 @@ class BokehMPLBase(object):
                                          )
         if path:
             with open(path, "w+") as f:
-                f.write(html.encode("utf-8"))
+                f.write(html)
         else:
-            return html.encode("utf-8")
+            return html
 
 class PandasTable(BokehMPLBase):
     topmodel = 'pivotmodel'
@@ -730,8 +730,10 @@ class PlotClient(object):
             css_paths=dump.css_paths
         template = get_template(template)
         result = template.render(
-            rawjs=dump.inline_scripts(script_paths).decode('utf8'),
-            rawcss=dump.inline_css(css_paths).decode('utf8'),
+            # Was: rawjs=dump.inline_scripts(script_paths).decode('utf8'),
+            # Was: rawcss=dump.inline_css(css_paths).decode('utf8'),
+            rawjs=dump.inline_scripts(script_paths),
+            rawcss=dump.inline_css(css_paths),
             js_snippets=js_snippets,
             html_snippets=html_snippets
             )
@@ -767,9 +769,9 @@ class PlotClient(object):
         html = self.make_html(list(self.models.values()))
         if path:
             with open(path, "w+") as f:
-                f.write(html.encode("utf-8"))
+                f.write(html)
         else:
-            return html.encode("utf-8")
+            return html
 
 
 def get_template(filename):

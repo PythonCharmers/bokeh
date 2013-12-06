@@ -146,7 +146,7 @@ class BaseHTMLSession(Session):
             f_name = join(self.server_static_dir, css_path)
             strings.append("""
               /* BEGIN %s */
-            """ % f_name + open(f_name).read().decode("utf-8") + \
+            """ % f_name + open(f_name).read() + \
             """
               /* END %s */
             """ % f_name)
@@ -309,7 +309,9 @@ class HTMLFileSession(BaseHTMLSession):
 
         if js == "inline" or (js is None and self.inline_js):
             # TODO: Are the UTF-8 decodes really necessary?
-            rawjs = self._inline_scripts(self.js_paths()).decode("utf-8")
+            # The UTF-8 decode breaks Python 3.x.
+            # Was: rawjs = self._inline_scripts(self.js_paths()).decode("utf-8")
+            rawjs = self._inline_scripts(self.js_paths())
             jsfiles = []
         else:
             rawjs = None
@@ -317,7 +319,9 @@ class HTMLFileSession(BaseHTMLSession):
 
         if css == "inline" or (css is None and self.inline_css):
             # TODO: Are the UTF-8 decodes really necessary?
-            rawcss = self._inline_css(self.css_paths()).decode("utf-8")
+            # The UTF-8 decode breaks Python 3.x.
+            # Was: rawjs = self._inline_scripts(self.js_paths()).decode("utf-8")
+            rawcss = self._inline_css(self.css_paths())
             cssfiles = []
         else:
             rawcss = None
@@ -339,6 +343,9 @@ class HTMLFileSession(BaseHTMLSession):
         return html
 
     def embed_js(self, plot_id, host):
+        """
+        Returns the result as a (unicode) string
+        """
 
         # FIXME: Handle this more intelligently
         pc_ref = self.get_ref(self.plotcontext)
@@ -357,7 +364,8 @@ class HTMLFileSession(BaseHTMLSession):
             modelid = pc_ref["id"],
             modeltype = pc_ref["type"],
             plotid = plot_id,  all_models = self.serialize(models))
-        return jscode.encode("utf-8")
+        # return jscode.encode("utf-8")
+        return jscode
 
 
     def save(self, filename=None, js=None, css=None, rootdir=None):
@@ -376,7 +384,7 @@ class HTMLFileSession(BaseHTMLSession):
         if filename is None:
             filename = self.filename
         with open(filename, "w") as f:
-            f.write(s.encode("utf-8"))
+            f.write(s)
         return
 
     def view(self, do_save=True, new=False, autoraise=True):
@@ -819,7 +827,7 @@ class NotebookSessionMixin(object):
         return [join(self.server_static_dir, d) for d in self.js_files]
 
     def dumps(self, objects):
-        """ Returns the HTML contents as a string
+        """ Returns the HTML contents as a (unicode) string
         FIXME : signature different than other dumps
         FIXME: should consolidate code between this one and that one.
         """
@@ -854,7 +862,8 @@ class NotebookSessionMixin(object):
                                            elementid = elementid,
                                            js_snippets = [js],
                                            )
-        return html.encode("utf-8")
+        # return html.encode("utf-8")
+        return html
 
     def show(self, *objects):
         """ Displays the given objects, or all objects currently associated
@@ -889,8 +898,10 @@ class NotebookSession(NotebookSessionMixin, HTMLFileSession):
         js_paths = self.js_files
         css_paths = self.css_paths()
         html = self._load_template(self.html_template).render(
-            rawjs=self._inline_scripts(js_paths).decode('utf8'),
-            rawcss=self._inline_css(css_paths).decode('utf8'),
+            # Was: rawjs=self._inline_scripts(js_paths).decode('utf8'),
+            # Was: rawcss=self._inline_css(css_paths).decode('utf8'),
+            rawjs=self._inline_scripts(js_paths),
+            rawcss=self._inline_css(css_paths),
             js_snippets=[],
             html_snippets=["<p>Configuring embedded BokehJS mode.</p>"])
         displaypub.publish_display_data('bokeh', {'text/html': html})
