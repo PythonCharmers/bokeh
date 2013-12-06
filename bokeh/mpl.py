@@ -1,24 +1,22 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-import numpy as np
+from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import uuid
+import os
+import json
 try:
     from urllib.parse import urljoin, urlsplit
 except ImportError:   # Python 2
     from urlparse import urljoin, urlsplit
 
 import requests
+import numpy as np
+import pandas
 from future.builtins import open, range, str, super, zip
 
 from . import bbmodel
 from . import protocol
 from . import data
-import os
 from . import dump
-import json
-import pandas
 from .exceptions import DataIntegrityException
 
 from bokeh import protocol
@@ -766,7 +764,7 @@ class PlotClient(object):
         """if inline, path is a filepath, otherwise,
         path is a dir
         """
-        html = self.make_html(list(self.models.values()))
+        html = self.make_html(self.models.values())
         if path:
             with open(path, "w+") as f:
                 f.write(html)

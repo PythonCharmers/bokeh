@@ -153,7 +153,7 @@ def recursively_traverse_plot_object(plot_object,
         children.add(plot_object)
         traversed_ids.add(plot_object._id)
         children.update(immediate_children)
-        for child in list(children):
+        for child in children:
             if child not in traversed_ids:
                 recursively_traverse_plot_object(
                     child,
@@ -421,7 +421,7 @@ class ColumnDataSource(DataSource):
         """
         if len(args) == 1 and "data" not in kw:
             kw["data"] = args[0]
-        for name, data in list(kw.get("data", {}).items()):
+        for name, data in kw.get("data", {}).items():
             self.add(data, name)
         super(ColumnDataSource, self).__init__(**kw)
 

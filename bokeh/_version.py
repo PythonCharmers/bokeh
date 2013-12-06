@@ -1,7 +1,5 @@
-from __future__ import print_function
-from __future__ import unicode_literals
-from future.builtins import range
-from future.builtins import open
+from __future__ import print_function, unicode_literals
+from future.builtins import range, open
 
 IN_LONG_VERSION_PY = True
 # This file helps to compute a version number in source trees obtained from

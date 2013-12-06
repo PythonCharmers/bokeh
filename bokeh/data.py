@@ -4,12 +4,12 @@ import numpy as np
 import pandas
 def make_source(**kwargs):
     # need to cast pandas as numpy so we can rowindex easily
-    for k in list(kwargs.keys()):
+    for k in kwargs.keys():
         if isinstance(kwargs[k], pandas.Series):
             kwargs[k] = kwargs[k].view(np.ndarray)
     output = []
-    flds = list(kwargs.keys())
-    for idx in range(len(list(kwargs.values())[0])):
+    flds = kwargs.keys()
+    for idx in range(len(kwargs.values()[0])):
         point = {}
         for f in flds:
             val = kwargs[f][idx]

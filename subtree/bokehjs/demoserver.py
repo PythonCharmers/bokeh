@@ -1,12 +1,13 @@
-from __future__ import print_function
-from __future__ import unicode_literals
-from future.builtins import open
-import flask
-import hemlib
+from __future__ import print_function, unicode_literals
 import json
 import os
-from os.path import join
 import sys
+from os.path import join
+
+import flask
+from future.builtins import open
+
+from . import hemlib
 
 app = flask.Flask(__name__)
 
@@ -174,7 +175,7 @@ alltests = {
 }
 
 allpossibletests = set()
-for v in list(alltests.values()):
+for v in alltests.values():
     allpossibletests.update(v)
 alltests['allpossibletests'] = allpossibletests
 

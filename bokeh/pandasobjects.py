@@ -1,8 +1,5 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from future.builtins import super
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 import pandas
 import time
 from . import protocol

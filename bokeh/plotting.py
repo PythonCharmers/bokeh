@@ -1,8 +1,6 @@
 """ Command-line driven plotting functions, a la Matplotlib  / Matlab / etc.
 """
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import division, print_function, unicode_literals
 from future.builtins import zip
 import copy
 from collections import Iterable
@@ -415,7 +413,7 @@ class GlyphFunction(object):
         """
         # Go through the list of position and keyword arguments, matching up
         # the full list of required glyph data attributes
-        attributes = dict(list(zip(self.argnames, args)))
+        attributes = dict(zip(self.argnames, args))
         if len(args) < len(self.argnames):
             for argname in self.argnames[len(args):]:
                 if argname in kwargs:
@@ -714,7 +712,7 @@ def markers():
     print(sorted(marker_types.keys()))
 
 
-for _marker_name, _glyph_class in list(marker_types.items()):
+for _marker_name, _glyph_class in marker_types.items():
     if len(_marker_name) <= 2:
         continue
     _func = GlyphFunction(_glyph_class, ("x", "y"))
@@ -779,7 +777,7 @@ def scatter(*args, **kwargs):
     # TODO this won't be necessary when markers are made uniform
     if markertype == "circle":
         if "radius" not in kwargs:
-            kwargs["radius"] = kwargs.get("size",8)/2
+            kwargs["radius"] = kwargs.get("size",8)//2
 
     # TODO: How to handle this? Just call curplot()?
     if not len(color_fields.intersection(set(kwargs.keys()))):

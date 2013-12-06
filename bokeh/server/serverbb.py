@@ -1,5 +1,4 @@
 from __future__ import absolute_import, unicode_literals
-from future.builtins import zip
 import uuid
 import logging
 try:
@@ -10,6 +9,7 @@ except:   # Python 3
 import requests
 import redis
 import numpy as np
+from future.builtins import dict, zip
 
 import bokeh.bbmodel as bbmodel
 from bokeh import protocol
@@ -172,7 +172,7 @@ class RedisSession(PlotServerSession):
             self.doc, self, delete=delete
             )
         to_keep = set([x._id for x in all_models])
-        for k in list(self._models.keys()):
+        for k in self._models.keys():
             if k not in to_keep:
                 del self._models[k]
         return
@@ -200,7 +200,7 @@ class RedisSession(PlotServerSession):
             attr['attributes']['doc'] = self.docid
         attrs = [self.serialize(attr['attributes']) for attr in attrs]
         dkey = dockey(self.docid)
-        data = dict(list(zip(keys, attrs)))
+        data = dict(zip(keys, attrs))
         logger.debug('storing %s', data)
         self.r.mset(data)
         self.r.sadd(dkey, *keys)
@@ -218,7 +218,7 @@ class RedisSession(PlotServerSession):
             m['doc'] = self.docid
         models = [self.serialize(m) for m in models]
         dkey = dockey(self.docid)
-        data = dict(list(zip(keys, models)))
+        data = dict(zip(keys, models))
         for k,v in data.items():
             logger.debug('key: %s', k)
             logger.debug('val: %s', v)

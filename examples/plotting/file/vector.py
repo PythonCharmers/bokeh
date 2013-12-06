@@ -1,8 +1,5 @@
-from __future__ import division
-from __future__ import unicode_literals
-from future.builtins import range
-from future.builtins import zip
-from future.builtins import int
+from __future__ import division, unicode_literals
+from future.builtins import int, range, zip
 
 import numpy as np
 from scipy.integrate import odeint

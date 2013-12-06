@@ -200,7 +200,7 @@ class DataCube(object):
                 return keys
             
             elif op == "cross":
-                return [list(self._data.groupby(left).keys()), list(self._data.groupby(right).keys())]
+                return [self._data.groupby(left).keys(), self._data.groupby(right).keys()]
 
             elif op == "nest":
                 # Nested group-by. In effect like a cross that rejects null

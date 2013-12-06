@@ -79,10 +79,8 @@ To use it:
  5: modify your MANIFEST.in to include versioneer.py
  6: add both versioneer.py and the generated _version.py to your VCS
 """
-from __future__ import print_function
-from __future__ import unicode_literals
-from future.builtins import range
-from future.builtins import open
+from __future__ import print_function, unicode_literals
+from future.builtins import open, range
 
 import os, sys, re
 from distutils.core import Command

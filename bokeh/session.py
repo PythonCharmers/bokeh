@@ -1,7 +1,6 @@
 """ Defines the base PlotSession and some example session types.
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 from future.builtins import open, str, super
 
 from .exceptions import DataIntegrityException
@@ -656,7 +655,7 @@ class PlotServerSession(BaseHTMLSession):
             m._dirty = False
 
     def store_all(self):
-        to_store = [x for x in list(self._models.values()) \
+        to_store = [x for x in self._models.values() \
                     if hasattr(x, '_dirty') and x._dirty]
         self.store_objs(to_store)
         return to_store
@@ -756,7 +755,7 @@ class PlotServerSession(BaseHTMLSession):
             m._callbacks_dirty = False
 
     def store_all_callbacks(self):
-        to_store = [x for x in list(self._models.values()) \
+        to_store = [x for x in self._models.values() \
                     if hasattr(x, '_callbacks_dirty') and x._callbacks_dirty]
         self.store_callbacks(to_store)
         return to_store
