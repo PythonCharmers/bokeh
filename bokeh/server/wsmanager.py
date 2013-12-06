@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import str
 import uuid
 import logging
 from .. import  protocol

@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future.builtins import str
 from .. import models
 from ...exceptions import DataIntegrityException
 from .docs import Doc
@@ -64,7 +66,7 @@ class User(models.ServerModel):
         docs = attrs.get('docs')
         newdocs = []
         for doc in docs:
-            if isinstance(doc, basestring):
+            if isinstance(doc, str):
                 doc = Doc.load(client, doc)
                 newdocs.append({'title' : doc.title,
                                 'docid' : doc.docid})

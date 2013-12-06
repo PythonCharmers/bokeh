@@ -5,12 +5,18 @@ plot server or serialized into JS for embedding in HTML or an IPython
 notebook.
 """
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import open
+from future.builtins import super
+from future.builtins import str
 import os
 from uuid import uuid4
 from functools import wraps
-import urlparse
+import urllib.parse
 import warnings
 import logging
+from future.utils import with_metaclass
 logger = logging.getLogger(__file__)
 
 from bokeh.properties import (HasProps, MetaHasProps, Any, Dict, Enum,
@@ -101,7 +107,7 @@ def json_apply(fragment, check_func, func):
         return output
     elif isinstance(fragment, dict):
         output = {}
-        for k, val in fragment.iteritems():
+        for k, val in fragment.items():
             output[k] = json_apply(val, check_func, func)
         return output
     else:
@@ -153,10 +159,8 @@ def recursively_traverse_plot_object(plot_object,
                     children=children)
         return children
 
-class PlotObject(HasProps):
+class PlotObject(with_metaclass(Viewable, HasProps)):
     """ Base class for all plot-related objects """
-
-    __metaclass__ = Viewable
 
     session = Instance   # bokeh.session.Session
 
@@ -260,7 +264,7 @@ class PlotObject(HasProps):
         return attrs
 
     def update(self, **kwargs):
-        for k,v in kwargs.iteritems():
+        for k,v in kwargs.items():
             setattr(self, k, v)
 
     @usesession
@@ -340,7 +344,7 @@ class PlotObject(HasProps):
         sess = self._session
         modelid = self._id
         typename = self.__view_model__
-        split = urlparse.urlsplit(sess.root_url)
+        split = urllib.parse.urlsplit(sess.root_url)
         if split.scheme == 'http':
             ws_conn_string = "ws://%s/bokeh/sub" % split.netloc
         else:
@@ -415,7 +419,7 @@ class ColumnDataSource(DataSource):
         """
         if len(args) == 1 and "data" not in kw:
             kw["data"] = args[0]
-        for name, data in kw.get("data", {}).items():
+        for name, data in list(kw.get("data", {}).items()):
             self.add(data, name)
         super(ColumnDataSource, self).__init__(**kw)
 

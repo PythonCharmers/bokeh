@@ -2,11 +2,15 @@
 classes and implement convenience behaviors like default values, etc.
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from future.builtins import super
+from future.builtins import str
 
 from copy import copy
 import inspect
 import numpy as np
 import logging
+from future.utils import with_metaclass
 logger = logging.getLogger(__name__)
 
 def _dummy(*args,**kw):
@@ -154,7 +158,7 @@ class DataSpec(BaseProperty):
         attrname = "_" + self.name
         if hasattr(obj, attrname):
             setval = getattr(obj, attrname)
-            if isinstance(setval, basestring) and self.default is None:
+            if isinstance(setval, str) and self.default is None:
                 # A string representing the field
                 return setval
             elif not isinstance(setval, dict):
@@ -174,7 +178,7 @@ class DataSpec(BaseProperty):
     def __set__(self, obj, arg):
         if isinstance(arg, tuple):
             field, default = arg
-            if not isinstance(field, basestring):
+            if not isinstance(field, str):
                 raise RuntimeError("String is required for field name when assigning tuple to a DataSpec")
             arg = {"field": field, "default": default}
         super(DataSpec, self).__set__(obj, arg)
@@ -187,7 +191,7 @@ class DataSpec(BaseProperty):
     def to_dict(self, obj):
         # Build the complete dict
         setval = getattr(obj, "_"+self.name, None)
-        if isinstance(setval, basestring):
+        if isinstance(setval, str):
             d = {"field": setval, "units": self.units}
             if self.default is not None:
                 d["default"] = self.default
@@ -321,7 +325,7 @@ class ColorSpec(DataSpec):
         """ Returns True if the argument is a literal color.  Check for a
         well-formed hexadecimal color value.
         """
-        return isinstance(arg, basestring) and \
+        return isinstance(arg, str) and \
                ((len(arg) == 7 and arg[0] == "#") or arg in cls.NAMEDCOLORS)
 
     def _formattuple(self, colortuple):
@@ -344,7 +348,7 @@ class ColorSpec(DataSpec):
             if self.isconst(setval) or isinstance(setval, tuple):
                 # Fixed color value
                 return setval
-            elif isinstance(setval, basestring):
+            elif isinstance(setval, str):
                 if self.default is None:
                     # Field name
                     return setval
@@ -369,7 +373,7 @@ class ColorSpec(DataSpec):
         self._isset = True
         if isinstance(arg, tuple):
             if len(arg) == 2:
-                if not isinstance(arg[0], basestring):
+                if not isinstance(arg[0], str):
                     raise RuntimeError("String is required for field name when assigning 2-tuple to ColorSpec")
                 arg = {"field": arg[0], "default": arg[1]}
             elif len(arg) in (3, 4):
@@ -389,7 +393,7 @@ class ColorSpec(DataSpec):
                 # RGB or RGBa
                 # TODO: Should we validate that alpha is between 0..1?
                 return {"value": self._formattuple(setval)}
-            elif isinstance(setval, basestring):
+            elif isinstance(setval, str):
                 d = {"field": setval}
                 if self.default is not None:
                     d["default"] = self._formattuple(self.default)
@@ -427,7 +431,7 @@ class MetaHasProps(type):
         # First pre-process to handle all the Includes
         includes = {}
         removes = set()
-        for name, prop in class_dict.iteritems():
+        for name, prop in class_dict.items():
             if not isinstance(prop, Include):
                 continue
 
@@ -453,14 +457,14 @@ class MetaHasProps(type):
 
         # Update the class dictionary, taking care not to overwrite values
         # from the delegates that the subclass may have explicitly defined
-        for key, val in includes.iteritems():
+        for key, val in includes.items():
             if key not in class_dict:
                 class_dict[key] = val
         for tmp in removes:
             del class_dict[tmp]
 
         dataspecs = {}
-        for name, prop in class_dict.iteritems():
+        for name, prop in class_dict.items():
             if isinstance(prop, BaseProperty):
                 prop.name = name
                 if hasattr(prop, 'has_ref') and prop.has_ref:
@@ -504,9 +508,7 @@ def lookup_descriptor(cls, propname):
             return c.__dict__[propname]
     raise KeyError("Property '%s' not found on class '%s'" % (propname, cls))
 
-class HasProps(object):
-    __metaclass__ = MetaHasProps
-
+class HasProps(with_metaclass(MetaHasProps, object)):
     def __init__(self, *args, **kwargs):
         """ Set up a default initializer handler which assigns all kwargs
         that have the same names as Properties on the class
@@ -516,14 +518,14 @@ class HasProps(object):
 
         newkwargs = {}
         props = self.properties()
-        for kw, val in kwargs.iteritems():
+        for kw, val in kwargs.items():
             if kw in props:
                 setattr(self, kw, val)
             else:
                 newkwargs[kw] = val
         # Dump the rest of the kwargs in self.dict
         self.__dict__.update(newkwargs)
-        self._changed_vars.update(newkwargs.keys())
+        self._changed_vars.update(list(newkwargs.keys()))
         super(HasProps, self).__init__(*args)
 
     def clone(self):
@@ -575,7 +577,7 @@ class HasProps(object):
             dataspecs = set()
             for c in reversed(inspect.getmro(cls)):
                 if hasattr(c, "_dataspecs"):
-                    dataspecs.update(c._dataspecs.keys())
+                    dataspecs.update(list(c._dataspecs.keys()))
             cls.__cached_dataspecs = dataspecs
         return cls.__cached_dataspecs
 

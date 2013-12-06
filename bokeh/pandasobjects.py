@@ -1,6 +1,8 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future.builtins import super
 import pandas
 import time
 from . import protocol
@@ -166,7 +168,7 @@ class PandasPivotTable(PlotObject):
         """inplace manipulation of jsondata
         """
         precision = self.precision
-        for colname, data in jsondata.iteritems():
+        for colname, data in jsondata.items():
             if colname == '_selected' or colname == '_counts':
                 continue
             if self.source.metadata.get(colname, {}).get('date'):

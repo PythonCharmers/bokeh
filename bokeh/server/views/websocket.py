@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future import standard_library
 from flask import (
     render_template, request, 
     send_from_directory, make_response)
@@ -5,7 +7,7 @@ import flask
 import os
 import logging
 import uuid
-import urlparse
+import urllib.parse
 from ..app import app
 from .. import wsmanager
 log = logging.getLogger(__name__)

@@ -1,9 +1,12 @@
 from __future__ import print_function
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import open
 import flask
 import json
 import os
 import re
-import urlparse
+import urllib.parse
 
 def slug_json():
     path = os.path.join(slug_path(), 'slug.json')
@@ -50,7 +53,7 @@ def make_urls(filenames, host, port):
     filenames = [os.path.splitext(f)[0] for f in filenames]
     base = "http://%s:%s" % (host, port)
     #make urls
-    return [urlparse.urljoin(base, x) for x in filenames]
+    return [urllib.parse.urljoin(base, x) for x in filenames]
 
 def slug_libs(app, libs):
     targets = [os.path.join(slug_path(), os.path.normpath(x)) for x in libs]

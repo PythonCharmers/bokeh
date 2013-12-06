@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 # The plot server must be running
 
 import numpy as np

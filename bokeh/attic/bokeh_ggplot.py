@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 from . import plot_expr_graph as peg
 from .data_graph import FactorExprNode

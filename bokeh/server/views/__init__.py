@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from flask import current_app
 def make_json(jsonstring, status_code=200, headers={}):
     """like jsonify, except accepts string, so we can do our own custom

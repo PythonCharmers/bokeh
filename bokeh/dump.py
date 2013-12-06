@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import open
 # from wakariserver.. but copy pasted becuase we dont wnat
 # wakariserver dependency here.
 import shutil

@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import unicode_literals
+from future.builtins import str
 import uuid
 from .. import models 
 from ...objects import PlotObject, recursively_traverse_plot_object
@@ -99,7 +101,7 @@ def prune_and_get_valid_models(doc, session, delete=False):
     objs = recursively_traverse_plot_object(session.plotcontext)
     print("num models", len(objs))
     if delete:
-        for obj in session._models.values():
+        for obj in list(session._models.values()):
             if obj not in objs:
                 #not impl yet...
                 session.del_obj(obj)

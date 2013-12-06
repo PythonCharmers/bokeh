@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import redis
 from bokeh.server.models.user import User
 from bokeh.server.models.docs import Doc, prune_and_get_valid_models
@@ -16,7 +17,7 @@ for dockey in server_model_redis.keys("model:doc*"):
     docid = dockey.split(":")[-1]
     doc = Doc.load(server_model_redis, docid)
     
-for modelkey in bbmodel_redis.keys():
+for modelkey in list(bbmodel_redis.keys()):
     if len(modelkey.split(":")) == 3:
         _, typename, modelid = modelkey.split(":")
         data = json.loads(bbmodel_redis.get(modelkey))

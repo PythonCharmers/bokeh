@@ -1,9 +1,13 @@
 from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
+from future.builtins import int
+from future.builtins import chr
+from future.builtins import open
 
 from os import mkdir
 from os.path import exists, expanduser, isdir, join
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import yaml
 
 def _bokeh_dir(create=False):
@@ -68,7 +72,7 @@ def download():
 def _getfile(base_url, file_name, data_dir):
 
     url = join(base_url, file_name)
-    u = urllib2.urlopen(url)
+    u = urllib.request.urlopen(url)
     f = open(join(data_dir, file_name), 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import super
 
 from .properties import Function, Instance, List, This, String, Color, Enum, Int, Array
 

@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future.builtins import super
 import time
 import unittest
 import mock

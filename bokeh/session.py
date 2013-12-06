@@ -1,13 +1,18 @@
 """ Defines the base PlotSession and some example session types.
 """
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import super
+from future.builtins import str
+from future.builtins import open
 
 from .exceptions import DataIntegrityException
 from os.path import abspath, split, join
 import os.path
 import json
 import logging
-import urlparse
+import urllib.parse
 import uuid
 import warnings
 
@@ -283,7 +288,7 @@ class HTMLFileSession(BaseHTMLSession):
         # vm_serialize into the PlotObjEncoder, because that would cause
         # all the attributes to be duplicated multiple times.)
         models = []
-        for m in self._models.itervalues():
+        for m in self._models.values():
             ref = self.get_ref(m)
             ref["attributes"] = m.vm_serialize()
             ref["attributes"].update({"id": ref["id"], "doc": None})
@@ -340,7 +345,7 @@ class HTMLFileSession(BaseHTMLSession):
         elementid = str(uuid.uuid4())
 
         models = []
-        for m in self._models.itervalues():
+        for m in self._models.values():
             ref = self.get_ref(m)
             ref["attributes"] = m.vm_serialize()
             ref["attributes"].update({"id": ref["id"], "doc": None})
@@ -404,7 +409,7 @@ class HTMLFileSession(BaseHTMLSession):
         Mostly intended to be used for debugging.
         """
         models = []
-        for m in self._models.itervalues():
+        for m in self._models.values():
             ref = self.get_ref(m)
             ref["attributes"] = m.vm_serialize()
             ref["attributes"].update({"id": ref["id"], "doc": None})
@@ -415,7 +420,7 @@ class HTMLFileSession(BaseHTMLSession):
             indent = None
         s = self.serialize(models, indent=indent)
         if file is not None:
-            if isinstance(file, basestring):
+            if isinstance(file, str):
                 with open(file, "w") as f:
                     f.write(s)
             else:
@@ -469,7 +474,7 @@ class PlotServerSession(BaseHTMLSession):
             'BOKEHUSER' : username})
 
         if self.root_url:
-            url = urlparse.urljoin(self.root_url, '/bokeh/userinfo/')
+            url = urllib.parse.urljoin(self.root_url, '/bokeh/userinfo/')
             self.userinfo = utils.get_json(self.http_session.get(url, verify=False))
         else:
             logger.info('Not using a server, plots will only work in embedded mode')
@@ -479,7 +484,7 @@ class PlotServerSession(BaseHTMLSession):
         self.plotcontext = None
         self.apikey = None
         self.bbclient = None   # reference to a ContinuumModelsClient
-        self.base_url = urlparse.urljoin(self.root_url, "/bokeh/bb/")
+        self.base_url = urllib.parse.urljoin(self.root_url, "/bokeh/bb/")
         self.raw_js_objs = []
         super(PlotServerSession, self).__init__()
 
@@ -490,7 +495,7 @@ class PlotServerSession(BaseHTMLSession):
         self.raw_js_objs.append(obj)
 
     def load_doc(self, docid):
-        url = urlparse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
         resp = self.http_session.get(url, verify=False)
         if resp.status_code == 401:
             raise Exception('HTTP Unauthorized accessing DocID "%s"' % docid)
@@ -520,7 +525,7 @@ class PlotServerSession(BaseHTMLSession):
         return
 
     def make_doc(self, title):
-        url = urlparse.urljoin(self.root_url,"/bokeh/doc/")
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/")
         data = protocol.serialize_web({'title' : title})
         response = self.http_session.post(url, data=data, verify=False)
         if response.status_code == 409:
@@ -531,7 +536,7 @@ class PlotServerSession(BaseHTMLSession):
         matching = [x for x in self.userinfo['docs'] \
                     if x.get('title') == title]
         docid = matching[0]['docid']
-        url = urlparse.urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
         response = self.http_session.delete(url, verify=False)
         if response.status_code == 409:
             raise DataIntegrityException
@@ -643,7 +648,7 @@ class PlotServerSession(BaseHTMLSession):
             m._dirty = False
 
     def store_all(self):
-        to_store = [x for x in self._models.values() \
+        to_store = [x for x in list(self._models.values()) \
                     if hasattr(x, '_dirty') and x._dirty]
         self.store_objs(to_store)
         return to_store
@@ -716,7 +721,7 @@ class PlotServerSession(BaseHTMLSession):
         for data in callback_json:
             m = self._models[data['id']]
             m._callbacks = {}
-            for attrname, callbacks in data['callbacks'].iteritems():
+            for attrname, callbacks in data['callbacks'].items():
                 for callback in callbacks:
                     obj = self._models[callback['obj']['id']]
                     callbackname = callback['callbackname']
@@ -743,7 +748,7 @@ class PlotServerSession(BaseHTMLSession):
             m._callbacks_dirty = False
 
     def store_all_callbacks(self):
-        to_store = [x for x in self._models.values() \
+        to_store = [x for x in list(self._models.values()) \
                     if hasattr(x, '_callbacks_dirty') and x._callbacks_dirty]
         self.store_callbacks(to_store)
         return to_store
@@ -752,26 +757,26 @@ class PlotServerSession(BaseHTMLSession):
 
     def disable_callbacks(self, models=None):
         if models is None:
-            models = self._models.itervalues()
+            models = iter(self._models.values())
         for m in models:
             m._block_callbacks = True
 
     def enable_callbacks(self, models=None):
         if models is None:
-            models = self._models.itervalues()
+            models = iter(self._models.values())
 
         for m in models:
             m._block_callbacks = False
 
     def clear_callback_queue(self, models=None):
         if models is None:
-            models = self._models.itervalues()
+            models = iter(self._models.values())
         for m in models:
             del m._callback_queue[:]
 
     def execute_callback_queue(self, models=None):
         if models is None:
-            models = self._models.itervalues()
+            models = iter(self._models.values())
         for m in models:
             for cb in m._callback_queue:
                 m._trigger(*cb)
@@ -819,7 +824,7 @@ class NotebookSessionMixin(object):
         FIXME: should consolidate code between this one and that one.
         """
         if len(objects) == 0:
-            objects = self._models.values()
+            objects = list(self._models.values())
         the_plot = [m for m in objects if isinstance(m, Plot)][0]
         plot_ref = self.get_ref(the_plot)
         elementid = str(uuid.uuid4())
@@ -896,7 +901,7 @@ class NotebookServerSession(NotebookSessionMixin, PlotServerSession):
     """ An IPython Notebook session that is connected to a plot server.
     """
     def ws_conn_string(self):
-        split = urlparse.urlsplit(self.root_url)
+        split = urllib.parse.urlsplit(self.root_url)
         #how to fix this in bokeh and wakari?
         if split.scheme == 'http':
             return "ws://%s/bokeh/sub" % split.netloc

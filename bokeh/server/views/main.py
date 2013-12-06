@@ -1,5 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future.builtins import str
 from flask import (
     render_template, request,
     send_from_directory, abort,
@@ -47,7 +49,7 @@ def favicon():
 
 def _makedoc(redisconn, u, title):
     docid = str(uuid.uuid4())
-    if isinstance(u, basestring):
+    if isinstance(u, str):
         u = user.User.load(redisconn, u)
     sess = RedisSession(app.bb_redis, docid)
     u.add_doc(docid, title)
@@ -130,7 +132,7 @@ def _get_bokeh_info(docid):
     sess = RedisSession(app.bb_redis, doc)
     sess.load()
     sess.prune()
-    all_models = sess._models.values()
+    all_models = list(sess._models.values())
     print("num models", len(all_models))
     all_models = sess.broadcast_attrs(all_models)
     returnval = {'plot_context_ref' : doc.plot_context_ref,

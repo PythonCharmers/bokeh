@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import super
 
 import numpy as np
 
@@ -50,7 +52,7 @@ class PandasPlotData(AbstractPlotData):
         groupby = self.df.groupby(by=facets)
         return [PandasPlotData(self.df, facets = facets,
                     _groupby = groupby, group_key = key) \
-                    for key in groupby.groups.keys()]
+                    for key in list(groupby.groups.keys())]
 
     def list_data(self):
         if self.df is None:

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import range
 
 import numpy as np
 
@@ -177,7 +179,7 @@ class DataCube(object):
             # If this is a numpy array, just return integer indices. If this
             # is a Pandas DataFrame, we can return its index.
             if isinstance(self._data, np.ndarray):
-                return range(self._data.shape[0])
+                return list(range(self._data.shape[0]))
             elif hasattr(self._data, "index"):
                 return self._data.index
         else:
@@ -198,7 +200,7 @@ class DataCube(object):
                 return keys
             
             elif op == "cross":
-                return [self._data.groupby(left).keys(), self._data.groupby(right).keys()]
+                return [list(self._data.groupby(left).keys()), list(self._data.groupby(right).keys())]
 
             elif op == "nest":
                 # Nested group-by. In effect like a cross that rejects null

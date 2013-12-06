@@ -1,6 +1,7 @@
+from __future__ import unicode_literals
 
 import numpy as np
-from itertools import izip
+
 from bokeh.plotting import *
 
 N = 4000
@@ -8,7 +9,7 @@ N = 4000
 x = np.random.random(size=N) * 100
 y = np.random.random(size=N) * 100
 radii = np.random.random(size=N) * 1.5
-colors = ["#%02x%02x%02x" % (r, g, 150) for r, g in izip(np.floor(50+2*x), np.floor(30+2*y))]
+colors = ["#%02x%02x%02x" % (r, g, 150) for r, g in zip(np.floor(50+2*x), np.floor(30+2*y))]
 
 output_server("color_scatter.py example")
 

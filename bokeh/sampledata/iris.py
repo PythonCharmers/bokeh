@@ -9,6 +9,7 @@ a pandas dataframe with the following fields:
     flowers['species']
 
 '''
+from __future__ import unicode_literals
 from os.path import dirname, join
 
 try:

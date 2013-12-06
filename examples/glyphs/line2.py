@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import unicode_literals
 
 from numpy import pi, arange, sin, cos
 import numpy as np

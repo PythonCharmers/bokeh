@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from future.builtins import open
+from future.builtins import int
 '''
 This module provides some recorded stock data for the follwing stocks: AAPL, FB, GOOG, IBM, MSFT.
 Each set of data is available as an attribute on the module (e.g., stocks.AAPL) and the value is

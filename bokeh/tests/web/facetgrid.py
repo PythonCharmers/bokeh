@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import open
 import pandas
 from bokeh.functional import *
 df = pandas.read_csv("../auto-mpg.csv")

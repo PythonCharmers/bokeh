@@ -2,6 +2,8 @@
 """
 from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
+from future.builtins import zip
 import copy
 from collections import Iterable
 from functools import wraps
@@ -413,7 +415,7 @@ class GlyphFunction(object):
         """
         # Go through the list of position and keyword arguments, matching up
         # the full list of required glyph data attributes
-        attributes = dict(zip(self.argnames, args))
+        attributes = dict(list(zip(self.argnames, args)))
         if len(args) < len(self.argnames):
             for argname in self.argnames[len(args):]:
                 if argname in kwargs:
@@ -442,7 +444,7 @@ class GlyphFunction(object):
                     # ColorSpecs do not have units.  However, if there are other kinds of
                     # DataSpecs that do have string constants, then we will need to fix
                     # this up to have smarter detection of field names.
-                    if isinstance(curval, basestring):
+                    if isinstance(curval, str):
                         glyph_params[dspec] = {"field": curval, "units": val}
                     else:
                         glyph_params[dspec] = {"value": curval, "units": val}
@@ -456,7 +458,7 @@ class GlyphFunction(object):
                 # This check for color constants needs to happen relatively early on because
                 # both strings and certain iterables are valid colors.
                 glyph_val = val
-            elif isinstance(val, basestring):
+            elif isinstance(val, str):
                 if self.glyphclass == glyphs.Text:
                     glyph_val = val
                 else:
@@ -712,7 +714,7 @@ def markers():
     print(sorted(marker_types.keys()))
 
 
-for _marker_name, _glyph_class in marker_types.items():
+for _marker_name, _glyph_class in list(marker_types.items()):
     if len(_marker_name) <= 2:
         continue
     _func = GlyphFunction(_glyph_class, ("x", "y"))
@@ -887,7 +889,7 @@ def _handle_1d_data_args(args, datasource=None, create_autoindex=True,
     # process, "arrays" should contain a uniform list of string/ndarray/iterable
     # corresponding to the inputs.
     for arg in args:
-        if isinstance(arg, basestring):
+        if isinstance(arg, str):
             # This has to be handled before our check for Iterable
             arrays.append(arg)
 
@@ -912,7 +914,7 @@ def _handle_1d_data_args(args, datasource=None, create_autoindex=True,
     # Now put all the data into a DataSource, or insert into existing one
     names = []
     for i, ary in enumerate(arrays):
-        if isinstance(ary, basestring):
+        if isinstance(ary, str):
             name = ary
         else:
             if i < len(suggested_names):

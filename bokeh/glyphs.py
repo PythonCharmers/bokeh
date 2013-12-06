@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 import inspect
 
@@ -41,7 +42,7 @@ class Glyph(PlotObject):
 
         # Iterate over all the DataSpec properties and convert them, using the
         # fact that DataSpecs store the dict-ified version on the object.
-        for attrname, dspec in self.dataspecs_with_refs().iteritems():
+        for attrname, dspec in self.dataspecs_with_refs().items():
             d[attrname] = dspec.to_dict(self)
         return d
 

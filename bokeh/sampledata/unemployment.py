@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from future.builtins import open
+from future.builtins import int
 '''
 This modules exposes per-county unemployment data for Unites States in 2009. It exposes a
 dictionary 'data' which is indexed by the two-tuple containing (state_id, county_id) and has the

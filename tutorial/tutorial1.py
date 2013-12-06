@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 # For information about this tutorial, please consult the
 # Tutorial section of the documentation.
 

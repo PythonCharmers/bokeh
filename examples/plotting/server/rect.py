@@ -1,4 +1,5 @@
 from __future__ import division
+from __future__ import unicode_literals
 
 # The plot server must be running
 # Go to http://localhost:5006/bokeh to view this plot

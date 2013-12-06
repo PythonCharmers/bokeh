@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 from numpy.random import random
 from bokeh.plotting import *

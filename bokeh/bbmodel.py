@@ -1,14 +1,18 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import super
+from future.builtins import str
 from . import protocol
 import requests
-import urlparse
-import urllib
+import urllib.parse
+import urllib.request, urllib.parse, urllib.error
 from . import utils
 import uuid
 import logging
 import copy
-import cPickle as pickle
+import pickle as pickle
 import redis
 
 import numpy as np
@@ -119,7 +123,7 @@ class ContinuumModelsClient(object):
     def __init__(self, docid, baseurl, apikey, session=None):
         self.apikey = apikey
         self.baseurl = baseurl
-        parsed = urlparse.urlsplit(baseurl)
+        parsed = urllib.parse.urlsplit(baseurl)
         self.docid = docid
         if session is None:
             session = requests.session()
@@ -186,7 +190,7 @@ class ContinuumModelsClient(object):
                           include_hidden=include_hidden)
     
     def fetch(self, typename=None, id=None, include_hidden=False):
-        query = urllib.urlencode({'include_hidden' : include_hidden})
+        query = urllib.parse.urlencode({'include_hidden' : include_hidden})
         if typename is None:
             url = utils.urljoin(self.baseurl, self.docid +"/") + "?" + query
             data = self.s.get(url).content

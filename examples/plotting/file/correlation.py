@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 from numpy import cumprod, linspace, random
 import time

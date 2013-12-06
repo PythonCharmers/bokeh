@@ -1,9 +1,12 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import zip
 import requests
-import urlparse
+import urllib.parse
 import uuid
 import logging
-import cPickle as pickle
+import pickle as pickle
 import redis
 import bokeh.bbmodel as bbmodel
 from bokeh import protocol
@@ -88,7 +91,7 @@ class ContinuumModelsStorage(object):
         with self.client.pipeline() as pipe:
             pipe.watch(mkey)
             model = self.get(typename, docid, id)
-            for k,v in attributes.iteritems():
+            for k,v in attributes.items():
                 model.set(k, v)
             self._upsert(pipe, model)
             pipe.execute()
@@ -144,7 +147,7 @@ class RedisSession(PlotServerSession):
     """
     def __init__(self, redisconn, doc, 
                  root_url="http://localhost:5006/", apikey=""):
-        if isinstance(doc, basestring):
+        if isinstance(doc, str):
             self.docid = doc
         else:
             self.set_doc(doc)
@@ -167,7 +170,7 @@ class RedisSession(PlotServerSession):
             self.doc, self, delete=delete
             )
         to_keep = set([x._id for x in all_models])
-        for k in self._models.keys():
+        for k in list(self._models.keys()):
             if k not in to_keep:
                 del self._models[k]
         return
@@ -195,7 +198,7 @@ class RedisSession(PlotServerSession):
             attr['attributes']['doc'] = self.docid
         attrs = [self.serialize(attr['attributes']) for attr in attrs]
         dkey = dockey(self.docid)
-        data = dict(zip(keys, attrs))
+        data = dict(list(zip(keys, attrs)))
         logger.debug('storing %s', data)
         self.r.mset(data)
         self.r.sadd(dkey, *keys)
@@ -213,8 +216,8 @@ class RedisSession(PlotServerSession):
             m['doc'] = self.docid
         models = [self.serialize(m) for m in models]
         dkey = dockey(self.docid)
-        data = dict(zip(keys, models))
-        for k,v in data.iteritems():
+        data = dict(list(zip(keys, models)))
+        for k,v in data.items():
             logger.debug('key: %s', k)
             logger.debug('val: %s', v)
         self.r.mset(data)

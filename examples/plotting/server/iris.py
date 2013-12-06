@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 
 from bokeh.sampledata.iris import flowers
 from bokeh.plotting import *

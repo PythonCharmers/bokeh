@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 # All of the other examples directly embed the Javascript and CSS code for
 # Bokeh's client-side runtime into the HTML.  This leads to the HTML files
 # being rather large.  An alternative is to ask Bokeh to produce HTML that

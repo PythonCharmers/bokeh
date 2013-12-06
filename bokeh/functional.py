@@ -4,6 +4,7 @@ Python using Chaco.  Uses other Bokeh classes to represent the pipeline
 and constructs a session-level object using the Chaco shell.
 """
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from .ggplot import GGPlot, Aesthetic, GeomPoint, GeomLine, Facet, Factor, Tool
 

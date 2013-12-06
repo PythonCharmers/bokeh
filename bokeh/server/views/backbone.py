@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
 from flask import (
         render_template, request,
         send_from_directory, make_response)
@@ -6,7 +8,7 @@ import flask
 import os
 import logging
 import uuid
-import urlparse
+import urllib.parse
 from ..app import app
 from ..serverbb import RedisSession
 from .. import wsmanager
@@ -125,7 +127,7 @@ def bulkget(docid, typename=None):
     sess = RedisSession(app.bb_redis, doc)
     sess.load()
     sess.prune()    
-    all_models = sess._models.values()
+    all_models = list(sess._models.values())
     if typename is not None:
         attrs = sess.attrs([x for x in all_models \
                             if x.__view_model__==typename])

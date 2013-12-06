@@ -1,4 +1,6 @@
 from __future__ import print_function
+from __future__ import unicode_literals
+from future.builtins import open
 import flask
 import hemlib
 import json
@@ -172,7 +174,7 @@ alltests = {
 }
 
 allpossibletests = set()
-for v in alltests.values():
+for v in list(alltests.values()):
     allpossibletests.update(v)
 alltests['allpossibletests'] = allpossibletests
 

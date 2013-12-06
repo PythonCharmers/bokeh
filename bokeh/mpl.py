@@ -1,8 +1,15 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from future import standard_library
+from future.builtins import super
+from future.builtins import open
+from future.builtins import zip
+from future.builtins import range
+from future.builtins import str
 import numpy as np
 import logging
-import urlparse
+import urllib.parse
 import requests
 import uuid
 from . import bbmodel
@@ -130,7 +137,7 @@ class PandasTable(BokehMPLBase):
     def sort(self, sort=None, direction=None):
         if sort is None:
             sort = []
-        elif isinstance(sort, basestring):
+        elif isinstance(sort, str):
             if direction is None: direction = True
             sort = [{'column' : sort, 'direction' : direction}]
         else:
@@ -251,10 +258,10 @@ class XYPlot(BokehMPLBase):
             else:
                 raise Exception("too many dims")
             return source, xfield, yfields
-        if not isinstance(x, basestring):
+        if not isinstance(x, str):
             if y is None:
                 y = x
-                x = range(len(y))
+                x = list(range(len(y)))
                 if isinstance(y, np.ndarray):
                     source, xfield, yfields = source_from_array(x, y)
                 else:
@@ -392,18 +399,18 @@ class PlotClient(object):
 
     @property
     def ws_conn_string(self):
-        split = urlparse.urlsplit(self.root_url)
+        split = urllib.parse.urlsplit(self.root_url)
         #how to fix this in bokeh and wakari?
         if split.scheme == 'http':
             return "ws://%s/bokeh/sub" % split.netloc
         else:
             return "wss://%s/bokeh/sub" % split.netloc
     def update_userinfo(self):
-        url = urlparse.urljoin(self.root_url, '/bokeh/userinfo/')
+        url = urllib.parse.urljoin(self.root_url, '/bokeh/userinfo/')
         self.userinfo = get_json(self.session.get(url, verify=False))
 
     def load_doc(self, docid):
-        url = urlparse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/getdocapikey/%s" % docid)
         resp = self.session.get(url, verify=False)
         if resp.status_code == 401:
             raise Exception('unauthorized')
@@ -417,7 +424,7 @@ class PlotClient(object):
             self.apikey = apikey['readonlyapikey']
             print('got read only apikey')
         self.models = {}
-        url = urlparse.urljoin(self.root_url, "/bokeh/bb/")
+        url = urllib.parse.urljoin(self.root_url, "/bokeh/bb/")
         self.bbclient = bbmodel.ContinuumModelsClient(
             docid, url, self.apikey)
         interactive_contexts = self.bbclient.fetch(
@@ -427,7 +434,7 @@ class PlotClient(object):
         self.ic = interactive_contexts[0]
 
     def make_doc(self, title):
-        url = urlparse.urljoin(self.root_url,"/bokeh/doc/")
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/")
         data = protocol.serialize_web({'title' : title})
         response = self.session.post(url, data=data, verify=False)
         if response.status_code == 409:
@@ -438,7 +445,7 @@ class PlotClient(object):
         matching = [x for x in self.userinfo['docs'] \
                     if x.get('title') == title]
         docid = matching[0]['docid']
-        url = urlparse.urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
+        url = urllib.parse.urljoin(self.root_url,"/bokeh/doc/%s/" % docid)
         response = self.session.delete(url, verify=False)
         if response.status_code == 409:
             raise DataIntegrityException
@@ -757,7 +764,7 @@ class PlotClient(object):
         """if inline, path is a filepath, otherwise,
         path is a dir
         """
-        html = self.make_html(self.models.values())
+        html = self.make_html(list(self.models.values()))
         if path:
             with open(path, "w+") as f:
                 f.write(html.encode("utf-8"))

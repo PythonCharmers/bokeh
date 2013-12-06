@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import open
 import subprocess
 import os
 from os.path import join, dirname

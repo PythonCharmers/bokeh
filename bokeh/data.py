@@ -1,13 +1,15 @@
+from __future__ import unicode_literals
+from future.builtins import range
 import numpy as np
 import pandas
 def make_source(**kwargs):
     # need to cast pandas as numpy so we can rowindex easily
-    for k in kwargs.keys():
+    for k in list(kwargs.keys()):
         if isinstance(kwargs[k], pandas.Series):
             kwargs[k] = kwargs[k].view(np.ndarray)
     output = []
-    flds = kwargs.keys()
-    for idx in range(len(kwargs.values()[0])):
+    flds = list(kwargs.keys())
+    for idx in range(len(list(kwargs.values())[0])):
         point = {}
         for f in flds:
             val = kwargs[f][idx]

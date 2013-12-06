@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from flask import abort, request, g
 from .. import serverbb
 from ..models import docs

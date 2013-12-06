@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+from future.builtins import zip
 '''
 This modules exposes geometry data for Unites States. It exposes a dictionary 'data' which is
 indexed by the two letter state code (e.g., 'CA', 'TX') and has the following dictionary as the
@@ -18,7 +20,7 @@ nan = float('NaN')
 
 data = {}
 with gzip.open(join(dirname(__file__), 'US Regions State Boundaries.csv.gz')) as f:
-    f.next()
+    next(f)
     reader = csv.reader(f, delimiter=',', quotechar='"')
     for row in reader:
         region, name, code, geometry, dummy = row
@@ -30,7 +32,7 @@ with gzip.open(join(dirname(__file__), 'US Regions State Boundaries.csv.gz')) as
                 lats.append(nan)
                 lons.append(nan)
             coords = (c.split(',')[:2] for c in poly.text.split())
-            lat, lon = zip(*[(float(lat), float(lon)) for lon, lat in coords])
+            lat, lon = list(zip(*[(float(lat), float(lon)) for lon, lat in coords]))
             lats.extend(lat)
             lons.extend(lon)
         data[code] = {
