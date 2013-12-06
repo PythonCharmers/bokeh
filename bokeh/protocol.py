@@ -1,7 +1,5 @@
-from __future__ import division
-from __future__ import unicode_literals
-from future.builtins import super
-from future.builtins import int
+from __future__ import division, unicode_literals
+from future.builtins import int, super
 import uuid
 import json
 import threading
@@ -43,7 +41,7 @@ class NumpyJSONEncoder(json.JSONEncoder):
             else:
                 return float(obj)
         elif isinstance(obj, pd.tslib.Timestamp):
-            return obj.value / millifactor
+            return obj.value // millifactor
         else:
             return super(NumpyJSONEncoder, self).default(obj)
 

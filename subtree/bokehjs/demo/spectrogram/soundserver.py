@@ -25,8 +25,8 @@ PORT = 9294
 
 NUM_SAMPLES = 1024
 SAMPLING_RATE = 44100
-MAX_FREQ = SAMPLING_RATE / 8
-FREQ_SAMPLES = NUM_SAMPLES / 8
+MAX_FREQ = SAMPLING_RATE // 8
+FREQ_SAMPLES = NUM_SAMPLES // 8
 SPECTROGRAM_LENGTH = 400
 
 # Maximum time we want to spend polling the microphone for a single request
@@ -43,7 +43,7 @@ def get_audio_data():
     try:
         audio_data  = fromstring(_stream.read(NUM_SAMPLES), dtype=short)
         normalized_data = audio_data / 32768.0
-        return (abs(fft(normalized_data))[:NUM_SAMPLES/2], normalized_data)
+        return (abs(fft(normalized_data))[:NUM_SAMPLES//2], normalized_data)
     except:
         return None
 

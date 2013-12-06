@@ -1,5 +1,4 @@
-from __future__ import division
-from __future__ import unicode_literals
+from __future__ import division, unicode_literals
 from future.builtins import int
 
 from bokeh.sampledata import us_counties, unemployment

@@ -1,6 +1,4 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import division, print_function, unicode_literals
 from future.builtins import open
 
 import flask
@@ -28,8 +26,8 @@ PORT = 9294
 
 NUM_SAMPLES = 1024
 SAMPLING_RATE = 44100
-MAX_FREQ = SAMPLING_RATE / 8
-FREQ_SAMPLES = NUM_SAMPLES / 8
+MAX_FREQ = SAMPLING_RATE // 8
+FREQ_SAMPLES = NUM_SAMPLES // 8
 SPECTROGRAM_LENGTH = 400
 
 # Maximum time we want to spend polling the microphone for a single request
@@ -55,7 +53,7 @@ def get_audio_data():
             audio_data  = fromstring(_stream.read(NUM_SAMPLES), dtype=np.int16)
             normalized_data = audio_data / 32768.0
             with mutex:
-                adata = (abs(fft(normalized_data))[:NUM_SAMPLES/2], normalized_data)
+                adata = (abs(fft(normalized_data))[:NUM_SAMPLES//2], normalized_data)
         except:
             with mutex:
                 adata = 0

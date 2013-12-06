@@ -1,6 +1,4 @@
-from __future__ import division
-from __future__ import unicode_literals
-from future.builtins import int
+from __future__ import division, unicode_literals
 
 from bokeh.sampledata import us_counties, unemployment
 from bokeh.plotting import *
@@ -24,7 +22,7 @@ for county_id in us_counties.data:
         continue
     try:
         rate = unemployment.data[county_id]
-        idx = min(int(rate/2), 5)
+        idx = min(rate//2, 5)
         county_colors.append(colors[idx])
     except KeyError:
         county_colors.append("black")

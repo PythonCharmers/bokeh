@@ -7,7 +7,7 @@ from bokeh.plotting import *
 
 sigma = 10
 rho = 28
-beta = 8.0/3
+beta = 8.0 / 3
 theta = 3 * np.pi / 4
 
 def lorenz(xyz, t):
