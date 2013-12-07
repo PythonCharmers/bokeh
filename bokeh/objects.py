@@ -4,11 +4,8 @@ this module can be stored as a backbone.js model graph, and stored in a
 plot server or serialized into JS for embedding in HTML or an IPython
 notebook.
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from future.builtins import open
-from future.builtins import super
-from future.builtins import str
+from __future__ import absolute_import, unicode_literals
+from future.builtins import open, str
 import os
 from uuid import uuid4
 from functools import wraps
